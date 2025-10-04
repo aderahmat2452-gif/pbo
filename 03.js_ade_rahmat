@@ -1,0 +1,26 @@
+class Mahasiswa {
+  constructor(nama, nim, jurusan) {
+    this.nama = nama;
+    this.nim = nim;
+    this.jurusan = jurusan;
+  }
+
+  belajar() {
+    console.log(`${this.nama} sedang belajar.`);
+  }
+
+  perkenalan() {
+    console.log(`Halo, nama saya ${this.nama}, NIM ${this.nim}, dari jurusan ${this.jurusan}.`);
+  }
+}
+
+let mhs1 = new Mahasiswa("mamat", 44321, 'RPL');
+let mhs2 = new Mahasiswa("ade rahmat", 33456, 'informatika');
+
+mhs1.perkenalan();
+mhs1.belajar();
+
+mhs2.perkenalan();
+mhs2.belajar();
+
+
