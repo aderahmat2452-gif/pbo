@@ -1,0 +1,92 @@
+    class Hewan {
+  constructor(nama, jenis) {
+    this.nama = nama;
+    this.jenis = jenis;
+  }
+
+  suara() {
+    return `${this.nama} bersuara...`;
+  }
+}
+
+class Kucing extends Hewan {
+  constructor(nama, warna) {
+    super(nama, "Kucing");
+    this.warna = warna;
+  }
+}
+
+// Jalankan class Kucing
+const milo = new Kucing("Milo", "Putih");
+
+console.log("=== Kucing ===");
+console.log(milo.nama);       // Milo
+console.log(milo.jenis);      // Kucing
+console.log(milo.warna);      // Putih
+console.log(milo.suara());    // Milo bersuara...
+class Anjing extends Hewan {
+  constructor(nama, warna) {
+    super(nama, "Anjing");
+    this.warna = warna;
+  }
+
+  suara() {
+    return `${this.nama} menggonggong: Woof woof!`;
+  }
+}
+
+const doge = new Anjing("Doge", "Coklat");
+
+console.log("=== Anjing ===");
+console.log(doge.nama);     // Doge
+console.log(doge.jenis);    // Anjing
+console.log(doge.warna);    // Coklat
+console.log(doge.suara());  // Doge menggonggong: Woof woof!
+
+class Serigala extends Hewan {
+  constructor(nama, warna) {
+    super(nama, "Serigala");
+    this.warna = warna;
+  }
+
+  suara() {
+    return super.suara() + " Auuuuu~";
+  }
+}
+
+const alpha = new Serigala("Alpha", "Abu-abu");
+
+console.log("=== Serigala ===");
+console.log(alpha.nama);     // Alpha
+console.log(alpha.jenis);    // Serigala
+console.log(alpha.warna);    // Abu-abu
+console.log(alpha.suara());  // Alpha bersuara... Auuuuu~
+
+class Burung extends Hewan {
+  constructor(nama) {
+    super(nama, "Burung");
+  }
+
+  suara() {
+    return `${this.nama} berkicau: Cip cip!`;
+  }
+}
+
+const tweety = new Burung("Tweety");
+
+console.log("=== Burung ===");
+console.log(tweety.nama);     // Tweety
+console.log(tweety.jenis);    // Burung
+console.log(tweety.suara());  // Tweety berkicau: Cip cip!
+
+const hewanList = [
+  new Kucing("Milo", "Putih"),
+  new Anjing("Buddy", "Hitam"),
+  new Serigala("Alpha", "Abu-abu"),
+  new Burung("Tweety")
+];
+
+hewanList.forEach(hewan => {
+  console.log(`Jenis: ${hewan.jenis}`);
+  console.log(hewan.suara());
+});
