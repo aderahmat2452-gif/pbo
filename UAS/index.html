@@ -1,69 +1,74 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
+   class User {
+    constructor(username, password) {
+        this.username = username;
+        this.password = password;
+    }
 }
 
-/* Background setengah putih & biru */
-.background {
-    height: 100vh;
-    background: linear-gradient(
-        to bottom,
-        white 50%,
-        #1e90ff 50%
-    );
-    display: flex;
-    justify-content: center;
-    align-items: center;
+class AuthService {
+    constructor() {
+        this.defaultUser = new User("admin", "12345");
+        this.saveUser();
+    }
+
+    saveUser() {
+        if (!localStorage.getItem("userData")) {
+            localStorage.setItem(
+                "userData",
+                JSON.stringify(this.defaultUser)
+            );
+        }
+    }
+
+    login(username, password) {
+        const user = JSON.parse(localStorage.getItem("userData"));
+
+        return (
+            username === user.username &&
+            password === user.password
+        );
+    }
 }
 
-/* Kotak login */
-.login-box {
-    background: white;
-    padding: 25px;
-    width: 320px;
-    border-radius: 10px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    text-align: center;
+class LoginController {
+    constructor() {
+        this.authService = new AuthService();
+        this.form = document.getElementById("loginForm");
+        this.message = document.getElementById("message");
+        this.init();
+    }
+
+    init() {
+        this.form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            this.handleLogin();
+        });
+    }
+
+    handleLogin() {
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+
+        if (this.authService.login(username, password)) {
+            this.message.style.color = "green";
+            this.message.innerText = "Login berhasil, selamat datang! 🎉";
+
+            localStorage.setItem(
+                "loginUser",
+                JSON.stringify({ username })
+            );
+
+            setTimeout(() => {
+                window.location.href = "dashboard.html";
+            }, 1000);
+
+        } else {
+            this.message.style.color = "red";
+            this.message.innerText =
+                "Uhh maaf, kayaknya salah deh 😅 coba cek lagi";
+        }
+    }
 }
 
-.login-box h2 {
-    margin-bottom: 15px;
-}
+new LoginController();
 
-/* Input */
-input {
-    width: 100%;
-    padding: 10px;
-    margin: 8px 0;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-}
-
-/* Tombol gradient biru-hijau */
-button {
-    width: 100%;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    background: linear-gradient(
-        to right,
-        #00bcd4,
-        #4caf50
-    );
-    transition: 0.3s;
-}
-
-button:hover {
-    opacity: 0.85;
-}
-
-/* Pesan login */
-#message {
-    margin-top: 10px;
-    font-size: 14px;
-}
