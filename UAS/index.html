@@ -1,62 +1,63 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <title>Project UAS PBO - Login</title>
+<meta charset="UTF-8">
+<title>Project UAS PBO - Login</title>
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(to bottom, white 50%, #1e90ff 50%);
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 0;
-        }
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom, white 50%, #1e90ff 50%);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
 
-        .box {
-            background: white;
-            padding: 25px;
-            width: 340px;
-            border-radius: 10px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            text-align: center;
-        }
+.box {
+    background: white;
+    padding: 25px;
+    width: 340px;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    text-align: center;
+}
 
-        input {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0;
-        }
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+}
 
-        button {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            border: none;
-            border-radius: 5px;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            background: green;
-        }
+button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    background: green;
+}
 
-        button.error {
-            background: linear-gradient(to right, gray, red);
-        }
-    </style>
+button.error {
+    background: linear-gradient(to right, gray, red);
+}
+</style>
 </head>
+
 <body>
 
 <div class="box" id="app">
-    <h3>Selamat datang di system kami</h3>
-    <p>Silahkan login</p>
+    <h3>Selamat datang di sistem kami</h3>
+    <p>Silakan login</p>
 
     <input type="text" id="username" placeholder="Username">
     <input type="password" id="password" placeholder="Password">
 
-    <button id="loginBtn" onclick="app.login()">Login</button>
+    <button id="loginBtn">Login</button>
 </div>
 
 <script>
@@ -102,6 +103,8 @@ class LoginApp {
         this.auth = new AuthService();
         this.button = document.getElementById("loginBtn");
         this.appBox = document.getElementById("app");
+
+        this.button.addEventListener("click", () => this.login());
     }
 
     login() {
@@ -109,10 +112,9 @@ class LoginApp {
         const password = document.getElementById("password").value;
 
         const user = this.auth.findUser(username);
-
-        // reset warna tombol
         this.button.classList.remove("error");
 
+        // USER TIDAK ADA
         if (!user) {
             alert(
 `Pergi ke taman memetik delima,
@@ -124,16 +126,14 @@ Username salah, coba lagi ya 😄`
             return;
         }
 
+        // PASSWORD SALAH
         if (user.password !== password) {
-            alert(
-"Ada pantun yang bertentangan, password kayaknya salah dah 😅"
-            );
+            alert("Ada pantun yang bertentangan, password kayaknya salah dah 😅");
             this.button.classList.add("error");
             return;
         }
 
-        // login berhasil
-        alert("Login berhasil! Selamat datang 🎉");
+        // LOGIN BERHASIL (TANPA POP-UP)
         this.showUserPage(user.username);
     }
 
@@ -141,7 +141,7 @@ Username salah, coba lagi ya 😄`
         this.appBox.innerHTML = `
             <h3>Halaman User</h3>
             <p>Selamat datang <b>${username}</b></p>
-            <p>Anda berhasil login ke system.</p>
+            <p>Anda berhasil login ke sistem layanan penjualan</p>
             <button style="background:green" onclick="location.reload()">
                 Logout
             </button>
@@ -152,8 +152,9 @@ Username salah, coba lagi ya 😄`
 /* =========================
    INISIALISASI
    ========================= */
-const app = new LoginApp();
+new LoginApp();
 </script>
 
 </body>
 </html>
+
