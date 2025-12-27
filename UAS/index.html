@@ -1,5 +1,4 @@
- 
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
@@ -84,8 +83,7 @@ class User {
 class AuthService {
     constructor() {
         this.users = [
-            new User("admin", "12345"),
-            new User("user", "user123")
+            new User("aderahmat", "12345")
         ];
         this.save();
     }
@@ -121,6 +119,7 @@ class LoginApp {
         const user = this.auth.findUser(username);
         this.button.classList.remove("error");
 
+        // USER SALAH
         if (!user) {
             alert(
 `Pergi ke taman memetik delima,
@@ -132,12 +131,14 @@ Username salah, coba lagi ya 😄`
             return;
         }
 
+        // PASSWORD SALAH
         if (user.password !== password) {
             alert("Ada pantun yang bertentangan, password kayaknya salah dah 😅");
             this.button.classList.add("error");
             return;
         }
 
+        // LOGIN BERHASIL (TANPA POP-UP)
         this.showUserPage(user.username);
     }
 
@@ -151,8 +152,12 @@ Username salah, coba lagi ya 😄`
     }
 }
 
+/* =========================
+   INISIALISASI
+   ========================= */
 new LoginApp();
 </script>
 
 </body>
 </html>
+
