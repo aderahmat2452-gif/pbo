@@ -1,3 +1,5 @@
+
+
   <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -18,29 +20,36 @@
         .box {
             background: white;
             padding: 25px;
-            width: 320px;
+            width: 340px;
             border-radius: 10px;
             box-shadow: 0 10px 20px rgba(0,0,0,0.2);
             text-align: center;
         }
 
-        input, button {
+        input {
             width: 100%;
             padding: 10px;
             margin: 8px 0;
         }
 
         button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
             border: none;
+            border-radius: 5px;
             color: white;
             font-weight: bold;
             cursor: pointer;
-            background: linear-gradient(to right, #00bcd4, #4caf50);
-            border-radius: 5px;
+            background: green; /* default */
+        }
+
+        button.error {
+            background: linear-gradient(to right, gray, red);
         }
 
         #message {
-            margin-top: 10px;
+            margin-top: 12px;
             font-weight: bold;
         }
     </style>
@@ -48,18 +57,20 @@
 <body>
 
 <div class="box" id="app">
-    <h3>Login Sistem</h3>
+    <h3>Selamat datang di system kami</h3>
+    <p>Silahkan login</p>
 
     <input type="text" id="username" placeholder="Username">
     <input type="password" id="password" placeholder="Password">
-    <button onclick="app.login()">Login</button>
+
+    <button id="loginBtn" onclick="app.login()">Login</button>
 
     <p id="message"></p>
 </div>
 
 <script>
 /* =========================
-   DATASET USER (JSON)
+   DATA USER (JSON)
    ========================= */
 class User {
     constructor(username, password) {
@@ -77,30 +88,29 @@ class AuthService {
             new User("admin", "12345"),
             new User("user", "user123")
         ];
-        this.saveToLocalStorage();
+        this.save();
     }
 
-    saveToLocalStorage() {
+    save() {
         if (!localStorage.getItem("users")) {
             localStorage.setItem("users", JSON.stringify(this.users));
         }
     }
 
-    checkLogin(username, password) {
+    findUser(username) {
         const users = JSON.parse(localStorage.getItem("users"));
-        return users.find(
-            u => u.username === username && u.password === password
-        );
+        return users.find(u => u.username === username);
     }
 }
 
 /* =========================
-   APLIKASI (CONTROLLER)
+   LOGIN APP (OOP)
    ========================= */
 class LoginApp {
     constructor() {
         this.auth = new AuthService();
         this.message = document.getElementById("message");
+        this.button = document.getElementById("loginBtn");
         this.appBox = document.getElementById("app");
     }
 
@@ -108,32 +118,56 @@ class LoginApp {
         const username = document.getElementById("username").value;
         const password = document.getElementById("password").value;
 
-        const user = this.auth.checkLogin(username, password);
+        const user = this.auth.findUser(username);
 
-        if (user) {
-            this.showUserPage(user.username);
-        } else {
-            this.message.style.color = "red";
-            this.message.innerText = "salah login";
+        // Reset tombol
+        this.button.classList.remove("error");
+
+        if (!user) {
+            this.showError(
+`Pergi ke taman memetik delima,
+Pulang ke rumah membawa cerita.
+Login dicoba tapi tak diterima,
+Username salah, coba lagi ya 😄`
+            );
+            return;
         }
+
+        if (user.password !== password) {
+            this.showError(
+"Ada pantun yang bertentangan, password kayaknya salah dah 😅"
+            );
+            return;
+        }
+
+        // Login berhasil
+        this.button.style.background = "green";
+        this.showUserPage(user.username);
+    }
+
+    showError(text) {
+        this.message.style.color = "red";
+        this.message.innerText = text;
+        this.button.classList.add("error");
     }
 
     showUserPage(username) {
         this.appBox.innerHTML = `
             <h3>Halaman User</h3>
-            <p>Selamat datang, <b>${username}</b></p>
-            <p>Anda berhasil login ke sistem.</p>
-            <button onclick="location.reload()">Logout</button>
+            <p>Selamat datang <b>${username}</b></p>
+            <p>Anda berhasil login ke system.</p>
+            <button style="background:green" onclick="location.reload()">
+                Logout
+            </button>
         `;
     }
 }
 
 /* =========================
-   INISIALISASI APP
+   INISIALISASI
    ========================= */
 const app = new LoginApp();
 </script>
 
 </body>
 </html>
-
