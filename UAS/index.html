@@ -1,5 +1,5 @@
  
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
@@ -8,7 +8,7 @@
 <style>
 body {
     font-family: Arial, sans-serif;
-    background: linear-gradient(to bottom, white 50%, #1e90ff 50%);
+    background: linear-gradient(135deg, #ffeb3b 45%, #1e90ff 55%);
     height: 100vh;
     display: flex;
     justify-content: center;
@@ -45,6 +45,12 @@ button {
 
 button.error {
     background: linear-gradient(to right, gray, red);
+}
+
+/* Tombol logout */
+.logout {
+    background: linear-gradient(to right, #e53935, #b71c1c);
+    margin-top: 15px;
 }
 </style>
 </head>
@@ -115,7 +121,6 @@ class LoginApp {
         const user = this.auth.findUser(username);
         this.button.classList.remove("error");
 
-        // USER TIDAK ADA
         if (!user) {
             alert(
 `Pergi ke taman memetik delima,
@@ -127,14 +132,12 @@ Username salah, coba lagi ya 😄`
             return;
         }
 
-        // PASSWORD SALAH
         if (user.password !== password) {
             alert("Ada pantun yang bertentangan, password kayaknya salah dah 😅");
             this.button.classList.add("error");
             return;
         }
 
-        // LOGIN BERHASIL (TANPA POP-UP)
         this.showUserPage(user.username);
     }
 
@@ -143,16 +146,11 @@ Username salah, coba lagi ya 😄`
             <h3>Halaman User</h3>
             <p>Selamat datang <b>${username}</b></p>
             <p>Anda berhasil login ke sistem layanan penjualan</p>
-            <button style="background:green" onclick="location.reload()">
-                Logout
-            </button>
+            <button class="logout" onclick="location.reload()">Logout</button>
         `;
     }
 }
 
-/* =========================
-   INISIALISASI
-   ========================= */
 new LoginApp();
 </script>
 
