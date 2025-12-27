@@ -1,4 +1,4 @@
-   class User {
+  class User {
     constructor(username, password) {
         this.username = username;
         this.password = password;
@@ -22,11 +22,8 @@ class AuthService {
 
     login(username, password) {
         const user = JSON.parse(localStorage.getItem("userData"));
-
-        return (
-            username === user.username &&
-            password === user.password
-        );
+        return username === user.username &&
+               password === user.password;
     }
 }
 
@@ -46,22 +43,15 @@ class LoginController {
     }
 
     handleLogin() {
-        const username = document.getElementById("username").value;
-        const password = document.getElementById("password").value;
+        const username =
+            document.getElementById("username").value;
+        const password =
+            document.getElementById("password").value;
 
         if (this.authService.login(username, password)) {
             this.message.style.color = "green";
-            this.message.innerText = "Login berhasil, selamat datang! 🎉";
-
-            localStorage.setItem(
-                "loginUser",
-                JSON.stringify({ username })
-            );
-
-            setTimeout(() => {
-                window.location.href = "dashboard.html";
-            }, 1000);
-
+            this.message.innerText =
+                "Login berhasil, selamat datang! 🎉";
         } else {
             this.message.style.color = "red";
             this.message.innerText =
