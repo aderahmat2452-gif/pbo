@@ -83,7 +83,9 @@ class User {
 class AuthService {
     constructor() {
         this.users = [
-            new User("aderahmat", "12345")
+            new User("aderahmat")
+            new Password("12345")
+            
         ];
         this.save();
     }
