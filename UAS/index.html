@@ -46,7 +46,6 @@ button.error {
     background: linear-gradient(to right, gray, red);
 }
 
-/* Tombol logout */
 .logout {
     background: linear-gradient(to right, #e53935, #b71c1c);
     margin-top: 15px;
@@ -68,7 +67,7 @@ button.error {
 
 <script>
 /* =========================
-   DATA USER (JSON)
+   DATA USER
    ========================= */
 class User {
     constructor(username, password) {
@@ -82,18 +81,17 @@ class User {
    ========================= */
 class AuthService {
     constructor() {
-        this.users = [
-            new User("aderahmat")
-            new Password("12345")
-            
-        ];
-        this.save();
-    }
 
-    save() {
-        if (!localStorage.getItem("users")) {
-            localStorage.setItem("users", JSON.stringify(this.users));
-        }
+        // USER & PASSWORD DIPISAH JELAS
+        const USERNAME = "aderahmat";
+        const PASSWORD = "12345";
+
+        this.users = [
+            new User(USERNAME, PASSWORD)
+        ];
+
+        // simpan / timpa ke localStorage
+        localStorage.setItem("users", JSON.stringify(this.users));
     }
 
     findUser(username) {
@@ -103,7 +101,7 @@ class AuthService {
 }
 
 /* =========================
-   LOGIN APP (OOP)
+   LOGIN APP
    ========================= */
 class LoginApp {
     constructor() {
@@ -121,26 +119,18 @@ class LoginApp {
         const user = this.auth.findUser(username);
         this.button.classList.remove("error");
 
-        // USER SALAH
         if (!user) {
-            alert(
-`Pergi ke taman memetik delima,
-Pulang ke rumah membawa cerita.
-Login dicoba tapi tak diterima,
-Username salah, coba lagi ya 😄`
-            );
+            alert("Username salah");
             this.button.classList.add("error");
             return;
         }
 
-        // PASSWORD SALAH
         if (user.password !== password) {
-            alert("Ada pantun yang bertentangan, password kayaknya salah dah 😅");
+            alert("Password salah");
             this.button.classList.add("error");
             return;
         }
 
-        // LOGIN BERHASIL (TANPA POP-UP)
         this.showUserPage(user.username);
     }
 
@@ -148,7 +138,7 @@ Username salah, coba lagi ya 😄`
         this.appBox.innerHTML = `
             <h3>Halaman User</h3>
             <p>Selamat datang <b>${username}</b></p>
-            <p>Anda berhasil login ke sistem layanan penjualan</p>
+            <p>Anda berhasil login</p>
             <button class="logout" onclick="location.reload()">Logout</button>
         `;
     }
@@ -162,4 +152,5 @@ new LoginApp();
 
 </body>
 </html>
+
 
