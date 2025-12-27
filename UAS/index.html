@@ -1,6 +1,5 @@
 
-
-  <!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -41,16 +40,11 @@
             color: white;
             font-weight: bold;
             cursor: pointer;
-            background: green; /* default */
+            background: green;
         }
 
         button.error {
             background: linear-gradient(to right, gray, red);
-        }
-
-        #message {
-            margin-top: 12px;
-            font-weight: bold;
         }
     </style>
 </head>
@@ -64,8 +58,6 @@
     <input type="password" id="password" placeholder="Password">
 
     <button id="loginBtn" onclick="app.login()">Login</button>
-
-    <p id="message"></p>
 </div>
 
 <script>
@@ -109,7 +101,6 @@ class AuthService {
 class LoginApp {
     constructor() {
         this.auth = new AuthService();
-        this.message = document.getElementById("message");
         this.button = document.getElementById("loginBtn");
         this.appBox = document.getElementById("app");
     }
@@ -120,35 +111,31 @@ class LoginApp {
 
         const user = this.auth.findUser(username);
 
-        // Reset tombol
+        // reset warna tombol
         this.button.classList.remove("error");
 
         if (!user) {
-            this.showError(
+            alert(
 `Pergi ke taman memetik delima,
 Pulang ke rumah membawa cerita.
 Login dicoba tapi tak diterima,
 Username salah, coba lagi ya 😄`
             );
+            this.button.classList.add("error");
             return;
         }
 
         if (user.password !== password) {
-            this.showError(
+            alert(
 "Ada pantun yang bertentangan, password kayaknya salah dah 😅"
             );
+            this.button.classList.add("error");
             return;
         }
 
-        // Login berhasil
-        this.button.style.background = "green";
+        // login berhasil
+        alert("Login berhasil! Selamat datang 🎉");
         this.showUserPage(user.username);
-    }
-
-    showError(text) {
-        this.message.style.color = "red";
-        this.message.innerText = text;
-        this.button.classList.add("error");
     }
 
     showUserPage(username) {
@@ -171,3 +158,4 @@ const app = new LoginApp();
 
 </body>
 </html>
+
