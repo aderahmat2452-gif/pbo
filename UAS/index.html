@@ -1,64 +1,139 @@
-  class User {
+  <!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Project UAS PBO - Login</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, white 50%, #1e90ff 50%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+        }
+
+        .box {
+            background: white;
+            padding: 25px;
+            width: 320px;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+        }
+
+        button {
+            border: none;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            background: linear-gradient(to right, #00bcd4, #4caf50);
+            border-radius: 5px;
+        }
+
+        #message {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="box" id="app">
+    <h3>Login Sistem</h3>
+
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="app.login()">Login</button>
+
+    <p id="message"></p>
+</div>
+
+<script>
+/* =========================
+   DATASET USER (JSON)
+   ========================= */
+class User {
     constructor(username, password) {
         this.username = username;
         this.password = password;
     }
 }
 
+/* =========================
+   AUTH SERVICE
+   ========================= */
 class AuthService {
     constructor() {
-        this.defaultUser = new User("admin", "12345");
-        this.saveUser();
+        this.users = [
+            new User("admin", "12345"),
+            new User("user", "user123")
+        ];
+        this.saveToLocalStorage();
     }
 
-    saveUser() {
-        if (!localStorage.getItem("userData")) {
-            localStorage.setItem(
-                "userData",
-                JSON.stringify(this.defaultUser)
-            );
+    saveToLocalStorage() {
+        if (!localStorage.getItem("users")) {
+            localStorage.setItem("users", JSON.stringify(this.users));
         }
     }
 
-    login(username, password) {
-        const user = JSON.parse(localStorage.getItem("userData"));
-        return username === user.username &&
-               password === user.password;
+    checkLogin(username, password) {
+        const users = JSON.parse(localStorage.getItem("users"));
+        return users.find(
+            u => u.username === username && u.password === password
+        );
     }
 }
 
-class LoginController {
+/* =========================
+   APLIKASI (CONTROLLER)
+   ========================= */
+class LoginApp {
     constructor() {
-        this.authService = new AuthService();
-        this.form = document.getElementById("loginForm");
+        this.auth = new AuthService();
         this.message = document.getElementById("message");
-        this.init();
+        this.appBox = document.getElementById("app");
     }
 
-    init() {
-        this.form.addEventListener("submit", (e) => {
-            e.preventDefault();
-            this.handleLogin();
-        });
-    }
+    login() {
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
 
-    handleLogin() {
-        const username =
-            document.getElementById("username").value;
-        const password =
-            document.getElementById("password").value;
+        const user = this.auth.checkLogin(username, password);
 
-        if (this.authService.login(username, password)) {
-            this.message.style.color = "green";
-            this.message.innerText =
-                "Login berhasil, selamat datang! 🎉";
+        if (user) {
+            this.showUserPage(user.username);
         } else {
             this.message.style.color = "red";
-            this.message.innerText =
-                "Uhh maaf, kayaknya salah deh 😅 coba cek lagi";
+            this.message.innerText = "salah login";
         }
+    }
+
+    showUserPage(username) {
+        this.appBox.innerHTML = `
+            <h3>Halaman User</h3>
+            <p>Selamat datang, <b>${username}</b></p>
+            <p>Anda berhasil login ke sistem.</p>
+            <button onclick="location.reload()">Logout</button>
+        `;
     }
 }
 
-new LoginController();
+/* =========================
+   INISIALISASI APP
+   ========================= */
+const app = new LoginApp();
+</script>
+
+</body>
+</html>
 
