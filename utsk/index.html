@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -81,19 +81,10 @@
             justify-content: center;
         }
 
-        .right h2 {
-            margin-bottom: 5px;
-        }
-
-        .right p {
-            color: #666;
-            margin-bottom: 30px;
-        }
-
         form {
+            max-width: 300px;
             display: flex;
             flex-direction: column;
-            max-width: 300px;
         }
 
         input {
@@ -142,16 +133,26 @@
         <h2>Welcome back!</h2>
         <p>Please enter your details</p>
 
-        <form>
-            <input type="email" placeholder="Email">
-            <input type="password" placeholder="Password">
+        <form onsubmit="login(event)">
+            <input type="email" placeholder="Email" required>
+            <input type="password" placeholder="Password" required>
 
-            <button class="login">Log in</button>
-            <button class="google">Log in with Google</button>
+            <button type="submit" class="login">Log in</button>
+            <button type="button" class="google">Log in with Google</button>
         </form>
     </div>
 
 </div>
 
+<script>
+    function login(event) {
+        event.preventDefault(); // HENTIKAN reload
+
+        // simulasi login berhasil
+        window.location.href = "dashboard.html";
+    }
+</script>
+
 </body>
 </html>
+
