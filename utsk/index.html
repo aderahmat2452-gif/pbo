@@ -1,122 +1,126 @@
-  <!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <title>Login Page</title>
+<meta charset="UTF-8">
+<title>Login User</title>
 
-    <style>
-        * {
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
+<style>
+* {
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
 
-        body {
-            margin: 0;
-            background: #f4ecea;
-        }
+body {
+    margin: 0;
+    background: #f4ecea;
+}
 
-        .container {
-            display: flex;
-            height: 100vh;
-        }
+.container {
+    display: flex;
+    height: 100vh;
+}
 
-        /* KIRI */
-        .left {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+/* KIRI */
+.left {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-        .shapes {
-            position: relative;
-            width: 300px;
-            height: 200px;
-        }
+.shapes {
+    position: relative;
+    width: 300px;
+    height: 200px;
+}
 
-        .shape {
-            position: absolute;
-            border-radius: 20px;
-        }
+.shape {
+    position: absolute;
+    border-radius: 20px;
+}
 
-        .orange {
-            width: 200px;
-            height: 120px;
-            background: orange;
-            bottom: 0;
-            left: 0;
-        }
+.orange {
+    width: 200px;
+    height: 120px;
+    background: orange;
+    bottom: 0;
+    left: 0;
+}
 
-        .purple {
-            width: 80px;
-            height: 140px;
-            background: #5a3fff;
-            left: 30px;
-            top: 0;
-        }
+.purple {
+    width: 80px;
+    height: 140px;
+    background: #5a3fff;
+    left: 30px;
+    top: 0;
+}
 
-        .black {
-            width: 60px;
-            height: 130px;
-            background: #111;
-            left: 120px;
-            top: 20px;
-        }
+.black {
+    width: 60px;
+    height: 130px;
+    background: #111;
+    left: 120px;
+    top: 20px;
+}
 
-        .yellow {
-            width: 70px;
-            height: 120px;
-            background: #ffd500;
-            left: 190px;
-            top: 40px;
-        }
+.yellow {
+    width: 70px;
+    height: 120px;
+    background: #ffd500;
+    left: 190px;
+    top: 40px;
+}
 
-        /* KANAN */
-        .right {
-            flex: 1;
-            background: #f8f1ef;
-            padding: 80px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
+/* KANAN */
+.right {
+    flex: 1;
+    background: #f8f1ef;
+    padding: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
 
-        form {
-            max-width: 300px;
-            display: flex;
-            flex-direction: column;
-        }
+form {
+    max-width: 300px;
+}
 
-        input {
-            padding: 12px;
-            margin-bottom: 15px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-        }
+input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
 
-        button {
-            padding: 12px;
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-            margin-bottom: 10px;
-        }
+button {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
 
-        .login {
-            background: black;
-            color: white;
-        }
+.login {
+    background: black;
+    color: white;
+}
 
-        .google {
-            background: white;
-            border: 1px solid #ccc;
-        }
-    </style>
+.login.error {
+    background: linear-gradient(to right, gray, red);
+}
+
+.logout {
+    background: linear-gradient(to right, #e53935, #b71c1c);
+    color: white;
+}
+</style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="container" id="app">
 
     <!-- KIRI -->
     <div class="left">
@@ -133,26 +137,92 @@
         <h2>Welcome back!</h2>
         <p>Please enter your details</p>
 
-        <form onsubmit="login(event)">
-            <input type="email" placeholder="Email" required>
-            <input type="password" placeholder="Password" required>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
 
-            <button type="submit" class="login">Log in</button>
-            <button type="button" class="google">Log in with Google</button>
-        </form>
+        <button class="login" id="loginBtn">Log in</button>
     </div>
 
 </div>
 
 <script>
-    function login(event) {
-        event.preventDefault(); // HENTIKAN reload
-
-        // simulasi login berhasil
-        window.location.href = "dashboard.html";
+/* =========================
+   DATA USER
+   ========================= */
+class User {
+    constructor(username, password) {
+        this.username = username;
+        this.password = password;
     }
+}
+
+/* =========================
+   AUTH SERVICE
+   ========================= */
+class AuthService {
+    constructor() {
+        this.users = [
+            new User("aderahmat", "12345")
+        ];
+    }
+
+    findUser(username) {
+        return this.users.find(u => u.username === username);
+    }
+}
+
+/* =========================
+   LOGIN APP
+   ========================= */
+class LoginApp {
+    constructor() {
+        this.auth = new AuthService();
+        this.button = document.getElementById("loginBtn");
+        this.app = document.getElementById("app");
+
+        this.button.addEventListener("click", () => this.login());
+    }
+
+    login() {
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+
+        this.button.classList.remove("error");
+
+        const user = this.auth.findUser(username);
+
+        if (!user) {
+            alert("Username salah");
+            this.button.classList.add("error");
+            return;
+        }
+
+        if (user.password !== password) {
+            alert("Password salah");
+            this.button.classList.add("error");
+            return;
+        }
+
+        this.showUserPage(user.username);
+    }
+
+    showUserPage(username) {
+        this.app.innerHTML = `
+            <div style="margin:auto; background:white; padding:40px; border-radius:12px; text-align:center">
+                <h2>Halaman User</h2>
+                <p>Selamat datang <b>${username}</b></p>
+                <p>Anda berhasil login</p>
+                <button class="logout" onclick="location.reload()">Logout</button>
+            </div>
+        `;
+    }
+}
+
+/* =========================
+   INIT
+   ========================= */
+new LoginApp();
 </script>
 
 </body>
 </html>
-
